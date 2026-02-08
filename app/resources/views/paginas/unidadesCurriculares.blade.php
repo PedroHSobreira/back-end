@@ -23,7 +23,7 @@
                 <a class="btn btn-primary" href="/turmas"><i class="bi bi-graph-up-arrow me-1"></i> Turmas</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/relatórios"><i class="bi bi-graph-up-arrow me-1"></i>
+                <a class="btn btn-primary" href="/relatorios"><i class="bi bi-graph-up-arrow me-1"></i>
                     Relatórios</a>
             </li>
         </ul>
@@ -44,16 +44,22 @@
                 </a>
             </div>
 
+            @php
+            $mapaCursos = [];
+            foreach ($cursos as $curso) {
+            $mapaCursos[$curso->codigo] = $curso->nome;
+            }
+            @endphp
+
+
             <!-- Cards -->
             <div class="row g-4">
-                @if ($ids->isEmpty())
-                <tr>
-                    <td colspan="8" class="text-center text-muted py-4">
-                        Nenhuma Unidade Curricular encontrada
-                    </td>
-                </tr>
+                @if ($ucs->isEmpty())
+                <div colspan="8" class="text-center text-muted py-4">
+                    Nenhuma Unidade Curricular encontrada
+                </div>
                 @else
-                @foreach ($ids as $uc)
+                @foreach ($ucs as $uc)
                 <div class="col-md-6 col-lg-4 float-start">
                     <div class="card uc-card p-4 h-100 hover-shadow">
 
@@ -72,15 +78,19 @@
                         </div>
 
                         <p class="text-muted small mb-2">
-                            Código: {{ $uc->codigo }}
+                            Código: {{ $uc->codigoUc }}
                         </p>
 
                         <ul class="list-unstyled small mb-3">
-                            <li><strong>Curso:</strong> {{ $uc->curso->nome ?? '—' }}</li>
-                            <li><strong>Carga Horária:</strong> {{ $uc->carga_horaria }}h</li>
+                            <li>
+                                <strong>Curso:</strong>
+                                {{ $uc->curso->nome ?? 'Curso não encontrado' }}
+                            </li>
+
+                            <li><strong>Carga Horária:</strong> {{ $uc->cargaHoraria }}h</li>
                             <li><strong>Dias:</strong> {{ $uc->dias }}</li>
-                            <li><strong>Horário:</strong> {{ $uc->hora_inicio }} - {{ $uc->hora_fim }}</li>
-                            <li><strong>Presença Mínima:</strong> {{ $uc->presenca_minima }}%</li>
+                            <li><strong>Horário:</strong> {{ $uc->horario }}</li>
+                            <li><strong>Presença Mínima:</strong> {{ $uc->presencaMinima }}%</li>
                         </ul>
 
                         <p class="small text-muted">
@@ -88,7 +98,7 @@
                         </p>
 
                         <div class="mt-auto d-flex">
-                            <a href="/editarUnidadesCurriculares/{{$id->id}}" class="btn btn-outline-dark btn-sm w-100">
+                            <a href="/editarUnidadesCurriculares/{{$uc->id}}" class="btn btn-outline-dark btn-sm w-100">
                                 <i class="bi bi-pencil me-1"></i> Editar
                             </a>
                         </div>
@@ -112,7 +122,7 @@
                     </div>
 
                     <!-- Form -->
-                    <form action="" method="POST">
+                    <form action="/inserirUc" method="POST">
                         @csrf
 
                         <div class="modal-body">
@@ -127,7 +137,7 @@
                                 <!-- Tipo -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Código *</label>
-                                    <input type="text" name="codigo" class="form-control" placeholder="Ex: UC10"
+                                    <input type="text" name="codigoUc" class="form-control" placeholder="Ex: UC10"
                                         required>
                                 </div>
                             </div>
@@ -135,47 +145,40 @@
                             <div class="row">
                                 <div class="col">
                                     <label class="form-label fw-semibold">Curso *</label>
-                                    <select name="curso" class="form-select" required>
+                                    <select name="cursoCodigo" class="form-select" required>
                                         <option value="">Selecione o curso</option>
-                                        <option value="tecnicoTI">Técnico de TI</option>
-                                        <option value="devBd">Desenvolvimento de Banco de Dados</option>
+
+                                        @if ($cursos->isEmpty())
+
+
+                                        <div colspan="8" class="text-center text-muted py-4">
+                                            Nenhum Curso encontrado
+                                        </div>
+
+                                        @else
+                                        @foreach ($cursos as $curso)
+                                        <option value="{{ $curso->id }}">
+                                            {{ $curso->nome }}
+                                        </option>
+
+                                        @endforeach
+                                        @endif
                                     </select>
                                 </div>
-                                
-                                <label class="form-label fw-semibold">Curso *</label>
-
-                                <select name="curso_id" class="form-select" required>
-                                    <option value="">Selecione o curso</option>
-
-                                    @foreach ($ids as $curso)
-                                    <option value="{{ $curso->id }}">
-                                        {{ $curso->nome }}
-                                    </option>
-                                    @endforeach
-                                </select> 
-
-                                <!-- use App\Models\Curso;
-
-                                public function create()
-                                {
-                                $cursos = Curso::orderBy('nome')->get();
-
-                                return view('sua-view', compact('cursos'));
-                                } -->
                             </div>
 
                             <div class="row">
                                 <!-- Carga Horária -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Carga Horária (horas) *</label>
-                                    <input type="number" name="carga_horaria" class="form-control" min="0" value="0"
+                                    <input type="number" name="cargaHoraria" class="form-control" min="0" value="0"
                                         required>
                                 </div>
 
                                 <!-- Turno -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Presença Mínima (%) *</label>
-                                    <input type="number" name="presencaMin" class="form-control" min="0" value="0"
+                                    <input type="number" name="presencaMinima" class="form-control" min="0" value="0"
                                         required>
                                 </div>
                             </div>
@@ -184,7 +187,7 @@
                                 <!-- Horário -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Dias de Aula *</label>
-                                    <select name="diasAula" class="form-select" required>
+                                    <select name="dias" class="form-select" required>
                                         <option value="">Selecione os dias</option>
                                         <option value="segunda a sexta">Segunda a Sexta</option>
                                         <option value="segunda, quarta e sexta">Segunda, Quarta e Sexta</option>

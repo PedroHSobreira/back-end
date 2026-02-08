@@ -23,7 +23,7 @@
                 <a class="btn btn-primary" href="/turmas"><i class="bi bi-graph-up-arrow me-1"></i> Turmas</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/relatórios"><i class="bi bi-graph-up-arrow me-1"></i>
+                <a class="btn btn-primary" href="/relatorios"><i class="bi bi-graph-up-arrow me-1"></i>
                     Relatórios</a>
             </li>
         </ul>
@@ -37,13 +37,14 @@
                     <h2 class="fw-bold">Cursos</h2>
                     <p class="text-muted">Editar e gerenciar cursos disponíveis</p>
                 </div>
-                <a href="/cursos.html" class="text-end btn btn-primary">
+                <a href="/cursos" class="text-end btn btn-primary">
                     <i class="bi bi-arrow-left me-1"></i> Voltar
                 </a>
             </div>
 
-            <form action="../atualizar/{{$dado->id}}" method="POST">
-            
+            <form action="/atualizarCurso/{{ $dado->id }}" method="POST">
+                @csrf
+
                 <div class="modal-body">
                     <div class="row">
                         <!-- Nome -->
@@ -53,15 +54,31 @@
                                 required>
                         </div>
 
+                        <div class="row">
+                            <div class="col">
+                                <label class="form-label fw-semibold">Sigla do Curso *</label>
+                                <input type="text" name="sigla" class="form-control" value="{{ $dado->sigla }}" maxlength="5"
+                                    required>
+                            </div>
+                        </div>
+
+
                         <!-- Tipo -->
                         <div class="col">
                             <label class="form-label fw-semibold">Tipo *</label>
                             <select name="tipo" id="tipo" class="form-select" required>
                                 <option value="">Selecione o tipo</option>
-                                <option value="tecnico">Técnico</option>
-                                <option value="graduacao">Graduação</option>
-                                <option value="livre">Curso Livre</option>
+                                <option value="tecnico" {{ $dado->tipo == 'tecnico' ? 'selected' : '' }}>
+                                    Técnico
+                                </option>
+                                <option value="graduacao" {{ $dado->tipo == 'graduacao' ? 'selected' : '' }}>
+                                    Graduação
+                                </option>
+                                <option value="livre" {{ $dado->tipo == 'livre' ? 'selected' : '' }}>
+                                    Curso Livre
+                                </option>
                             </select>
+
                         </div>
                     </div>
 
@@ -69,8 +86,8 @@
                         <!-- Carga Horária -->
                         <div class="col">
                             <label class="form-label fw-semibold">Carga Horária (horas) *</label>
-                            <input type="number" name="cargaHoraria" id="carga_horaria" class="form-control"
-                                value="{{$dado->carga_horaria}}" required>
+                            <input type="number" name="cargaHoraria" id="cargaHoraria" class="form-control"
+                                value="{{$dado->cargaHoraria}}" required>
                         </div>
 
                         <!-- Horário -->
@@ -86,10 +103,10 @@
                         <!-- Data Início -->
                         <div class="col">
                             <label class="form-label fw-semibold">Data de Início *</label>
-                            <input type="date" name="dataInicio" id="data_inicio" class="form-control"
-                                value="{{$dado->data_inicio}}" required>
+                            <input type="date" name="dataInicio" id="dataInicio" class="form-control"
+                                value="{{$dado->dataInicio}}" required>
                         </div>
-                        
+
                         <!-- Preço -->
                         <div class="col">
                             <label class="form-label fw-semibold">Preço (R$) *</label>
@@ -120,14 +137,19 @@
                         <!-- Status -->
                         <div class="col">
                             <label class="form-label fw-semibold">Status</label>
-                            <select name="status" class="form-select">
-                                <option value="ativo" selected>Ativo</option>
-                                <option value="inativo">Inativo</option>
+                            <select name="situacao" class="form-select">
+                                <option value="ativo" {{ $dado->situacao == 'ativo' ? 'selected' : '' }}>
+                                    Ativo
+                                </option>
+                                <option value="inativo" {{ $dado->situacao == 'inativo' ? 'selected' : '' }}>
+                                    Inativo
+                                </option>
                             </select>
+
                         </div>
 
                         <div class="col">
-                            
+
                         </div>
                     </div>
                 </div>
@@ -153,11 +175,11 @@
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Tem certeza que deseja excluir o compromisso: {{$dado->nome}}?
+                                Tem certeza que deseja excluir o curso: {{ $dado->nome }}?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-light" data-bs-dismiss="modal">Não</button>
-                                <a type="button" class="btn btn-danger" href="/excluir/{{$dado->id}}">Sim</a>
+                                <a type="button" class="btn btn-danger" href="/excluirCurso/{{$dado->id}}">Sim</a>
                             </div>
                         </div>
                     </div>

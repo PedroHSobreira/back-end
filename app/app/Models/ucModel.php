@@ -9,4 +9,10 @@ class ucModel extends Model
 {
     use HasFactory;
     protected $table='uc';
+
+    public function curso()
+    {
+        return $this->belongsTo(cursoModel::class, 'cursoCodigo', 'id');
+    }
 }
+

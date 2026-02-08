@@ -27,7 +27,6 @@ class administradorController extends Controller
         $dataCadastro           = $request->input('dataCadastro');
         $status                 = $request->input('status');
 
-
         //chamando model
         $model = new administradorModel();
 
@@ -40,18 +39,17 @@ class administradorController extends Controller
         $model->dataCadastro     = $dataCadastro;
         $model->status           = $status;
 
+
         $model->save();
         return redirect('/');
     } //fim do metodo inserir
 
     public function consultarAdministrador()
     {
-        $ids = administradorModel::all();
-
         $totalCursos   = cursoModel::count();
         $totalDocentes = docenteModel::count();
         $totalAlunos   = alunoModel::count();
-        $turmasAtivas = turmaModel::where('status', 'ativo')->count();
+        $turmasAtivas  = turmaModel::where('status', 'ativo')->count();
 
         return view('paginas.dashboardAdm', compact(
             'totalCursos',
@@ -81,4 +79,3 @@ class administradorController extends Controller
     } //fim do metodo excluir
 
 }
-

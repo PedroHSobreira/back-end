@@ -24,7 +24,7 @@
                 <a class="btn btn-primary" href="/turmas"><i class="bi bi-graph-up-arrow me-1"></i> Turmas</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/relatórios"><i class="bi bi-graph-up-arrow me-1"></i>
+                <a class="btn btn-primary" href="/relatorios"><i class="bi bi-graph-up-arrow me-1"></i>
                     Relatórios</a>
             </li>
         </ul>
@@ -47,37 +47,35 @@
 
             <!-- Cards -->
             <div class="row g-4">
-                @if ($ids->isEmpty())
-                <tr>
-                    <td colspan="8" class="text-center text-muted py-4">
-                        Nenhum docente encontrado
-                    </td>
-                </tr>
+                @if ($docentes->isEmpty())
+                <div colspan="8" class="text-center text-muted py-4">
+                    Nenhum Docente encontrado
+                </div>
                 @else
 
-                @foreach ($ids as $docente)
+                @foreach ($docentes as $docente)
                 <div class="col-md-6 col-lg-4 float-start">
                     <div class="card docente-card p-4 h-100 hover-shadow">
-                        
+
                         <div class="d-flex align-items-center mb-3">
                             <div class="avatar me-3">
                                 <i class="bi bi-mortarboard-fill"></i>
                             </div>
                             <div>
-                                <h6 class="fw-bold mb-0">{{ $docente->nome }}</h6>
-                                <small class="text-muted">{{ $docente->email }}</small>
+                                <h6 class="fw-bold mb-0">{{ $docente->nomeDocente }}</h6>
+                                <small class="text-muted">{{ $docente->emailDocente }}</small>
                             </div>
                         </div>
-                        
+
                         <ul class="list-unstyled small mb-3">
                             <li><strong>CPF:</strong> {{ $docente->cpf }}</li>
                             <li><strong>Telefone:</strong> {{ $docente->telefone }}</li>
                             <li><strong>Formação:</strong> {{ $docente->formacao }}</li>
                             <li><strong>Especialização:</strong> {{ $docente->especializacao }}</li>
                             <li><strong>Turno:</strong> {{ $docente->turno }}</li>
-                            <li><strong>Carga Horária:</strong> {{ $docente->carga_horaria }}</li>
+                            <li><strong>Carga Horária:</strong> {{ $docente->cargaHoraria }}</li>
                         </ul>
-                        
+
                         <div class="d-flex justify-content-between align-items-center mt-auto p-1">
                             @if ($docente->status === 'ativo')
                             <span class="badge bg-success-subtle text-success rounded-pill px-3">
@@ -93,13 +91,13 @@
                                 Desde {{$docente->created_at->format('d/m/Y')}}
                             </small>
                         </div>
-                        
+
                         <div class="mt-auto d-flex">
-                            <a href="/editarDocentes/{{$id->id}}" class="btn btn-outline-dark btn-sm w-100">
+                            <a href="/editarDocentes/{{$docente->id}}" class="btn btn-outline-dark btn-sm w-100">
                                 <i class="bi bi-pencil me-1"></i> Editar
                             </a>
                         </div>
-                        
+
                     </div>
                 </div>
                 @endforeach
@@ -121,8 +119,8 @@
                     </div>
 
                     <!-- Form -->
-                    <form action="" method="POST">
-                        <!-- @csrf -->
+                    <form action="/inserirDocente" method="POST">
+                        @csrf
 
                         <div class="modal-body">
                             <div class="row">
@@ -130,7 +128,7 @@
                                 <!-- Nome -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Nome Completo *</label>
-                                    <input type="text" name="nome" class="form-control"
+                                    <input type="text" name="nomeDocente" class="form-control"
                                         placeholder="Nome completo do docente" required>
                                 </div>
 
@@ -147,7 +145,7 @@
                                 <!-- Data de Nascimento -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Data de Nascimento *</label>
-                                    <input type="date" name="data_nascimento" class="form-control" required>
+                                    <input type="date" name="dataNascimento" class="form-control" required>
                                 </div>
                             </div>
 
@@ -172,7 +170,7 @@
                                 <!-- Email -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Email *</label>
-                                    <input type="text" name="email" class="form-control"
+                                    <input type="text" name="emailDocente" class="form-control"
                                         placeholder="email@senacsp.edu.br" required>
                                 </div>
                             </div>
@@ -231,6 +229,17 @@
                                         <option value="ativo" selected>Ativo</option>
                                         <option value="inativo">Inativo</option>
                                     </select>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label fw-semibold">Senha</label>
+                                        <input type="text" name="senhaDocente" class="form-control" placeholder="Informe a senha do docente">
+                                    </div>
+
+                                    <div class="col">
+
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1,63 +1,66 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\cursoModel;
+
+use App\Models\relatorioModel;
 use Illuminate\Http\Request;
 
-class cursoController extends Controller
+class relatorioController extends Controller
 {
-    public function cadastrarCurso(){
-        return view('paginas.');
-    }//fim do metodo de direcionamento
+    public function cadastrarRelatorio()
+    {
+        return view('paginas.relatorios');
+    } //fim do metodo de direcionamento
 
-    public function inserirCurso(Request $request){
-        $nome               = $request->input('nome');
-        $tipo               = $request->input('tipo');
-        $cargaHoraria       = $request->input('cargaHoraria');
-        $turno              = $request->input('turno');
-        $horario            = $request->input('horario');
-        $preco              = $request->input('preco');
-        $vagas              = $request->input('vagas');
-        $bolsas             = $request->input('bolsas');
-        $dataInicio         = $request->input('dataInicio');
-        $situacao           = $request->input('situacao');
+    public function inserirRelatorio(Request $request)
+    {
+        $feedbackAluno   = $request->input('feedbackAluno');
+        $dataEnvio       = $request->input('dataEnvio');
+        $resultado       = $request->input('resultado');
 
 
         //chamando model
-        $model = new cursoModel();
+        $model = new relatorioModel();
 
-        $model->nome             = $nome;
-        $model->tipo             = $tipo;
-        $model->cargaHoraria     = $cargaHoraria;
-        $model->turno            = $turno;
-        $model->horario          = $horario;
-        $model->preco            = $preco;
-        $model->vagas            = $vagas;
-        $model->bolsas           = $bolsas;
-        $model->dataInicio       = $dataInicio;
-        $model->situacao         = $situacao;
+        $model->feedbackAluno    = $feedbackAluno;
+        $model->dataEnvio        = $dataEnvio;
+        $model->resultado        = $resultado;
 
         $model->save();
         return redirect('/');
-    }//fim do metodo inserir
+    } //fim do metodo inserir
 
-    public function consultarCurso(){
-        $ids = cursoModel::all();
-        return view('paginas.',compact('ids'));
-    }//fim do metodo de consulta
+    public function consultarRelatorio()
+    {
+        $ids = relatorioModel::all();
 
-    public function editarCurso($id){
-        $dado = cursoModel::findOrFail($id);
-        return view('paginas.', compact('dado'));
-    }//fim do metodo editar
+        $pendente   = relatorioModel::count();
+        $aprovado   = relatorioModel::count();
+        $rejeitado  = relatorioModel::count();
 
-    public function atualizarCurso (Request $request, $id){
-        cursoModel::where('id', $id)->update($request->all());
+        return view('paginas.relatorios', compact(
+            'ids',
+            'pendente',
+            'aprovado',
+            'rejeitado'
+        ));
+    } //fim do metodo de consulta
+
+    public function editarRelatorio($id)
+    {
+        $dado = relatorioModel::findOrFail($id);
+        return view('paginas.relatorios', compact('dado'));
+    } //fim do metodo editar
+
+    public function atualizarRelatorio(Request $request, $id)
+    {
+        relatorioModel::where('id', $id)->update($request->all());
         return redirect('/consultar');
-    }//fim do metodo atualizar
+    } //fim do metodo atualizar
 
-    public function excluirCurso (Request $request, $id){
-        cursoModel::where('id', $id)->delete($request->all());
+    public function excluirRelatorio(Request $request, $id)
+    {
+        relatorioModel::where('id', $id)->delete($request->all());
         return redirect('/consultar');
-    }//fim do metodo excluir
+    } //fim do metodo excluir
 }

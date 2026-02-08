@@ -1,29 +1,30 @@
-<x-layout titulo="Relatórios - Senac">
-     <!-- Abas -->
+<x-layout titulo="Relatorios - Senac">
+    <div class="container-xl py-4 shadow">
+        <!-- Abas -->
         <ul class="nav nav-pills gap-2 mb-4">
             <li class="nav-item">
-                <a class="btn btn-primary" href="/dashboardAdm.html"><i
+                <a class="btn btn-primary" href="/dashboardAdm"><i
                         class="bi bi-speedometer2 me-1"></i>Dashboard</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/cursos.html"><i class="bi bi-clipboard2-check me-1"></i> Cursos</a>
+                <a class="btn btn-primary" href="/cursos"><i class="bi bi-clipboard2-check me-1"></i> Cursos</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/unidadesCurriculares.html"><i class="bi bi-people me-1"></i> UCs</a>
+                <a class="btn btn-primary" href="/unidadesCurriculares"><i class="bi bi-people me-1"></i> UCs</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/docentes.html"><i class="bi bi-calendar2-event me-1"></i> Docentes</a>
+                <a class="btn btn-primary" href="/docentes"><i class="bi bi-calendar2-event me-1"></i> Docentes</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/alunos.html"><i class="bi bi-graph-up-arrow me-1"></i>
+                <a class="btn btn-primary" href="/alunos"><i class="bi bi-graph-up-arrow me-1"></i>
                     Alunos</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="/turmas.html"><i class="bi bi-graph-up-arrow me-1"></i>
+                <a class="btn btn-primary" href="/turmas"><i class="bi bi-graph-up-arrow me-1"></i>
                     Turmas</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary active" href="/relatórios.html"><i class="bi bi-graph-up-arrow me-1"></i>
+                <a class="btn btn-primary active" href="/relatorios"><i class="bi bi-graph-up-arrow me-1"></i>
                     Relatórios</a>
             </li>
         </ul>
@@ -43,7 +44,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <small class="text-muted">Pendentes</small>
-                                <h4 class="fw-bold text-warning">2</h4>
+                                <h4 class="fw-bold text-warning">{{ $pendente }}</h4>
                             </div>
                             <i class="bi bi-clock text-warning fs-3"></i>
                         </div>
@@ -55,7 +56,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <small class="text-muted">Aprovados</small>
-                                <h4 class="fw-bold text-success">1</h4>
+                                <h4 class="fw-bold text-success">{{ $aprovado }}</h4>
                             </div>
                             <i class="bi bi-check-circle text-success fs-3"></i>
                         </div>
@@ -67,7 +68,7 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div>
                                 <small class="text-muted">Rejeitados</small>
-                                <h4 class="fw-bold text-danger">0</h4>
+                                <h4 class="fw-bold text-danger">{{ $rejeitado }}</h4>
                             </div>
                             <i class="bi bi-x-circle text-danger fs-3"></i>
                         </div>
@@ -77,7 +78,7 @@
 
             <!-- Filtro -->
             <div class="d-flex justify-content-end align-items-center mb-3 gap-3 flex-wrap">
-                
+
 
                 <div class="filter-tabs btn-group shadow-sm">
                     <button class="btn btn-light">Todos</button>
@@ -95,6 +96,7 @@
                             <tr>
                                 <th class="text-muted">Aluno</th>
                                 <th class="text-muted">UC</th>
+                                <th class="text-muted">Curso</th>
                                 <th class="text-muted">Docente</th>
                                 <th class="text-muted">Resultado</th>
                                 <th class="text-muted">Data</th>
@@ -104,26 +106,61 @@
                         </thead>
                         <tbody>
 
+                            @if ($ids->isEmpty())
                             <tr>
-                                <td>
-                                    <strong>Ana Carolina Moreira de Andrade Sanitária</strong><br>
-                                    <small class="text-muted">RA: 1143086799</small>
-                                </td>
-                                <td>Desenvolvimento de Banco de Dados</td>
-                                <td>Allan Sobral da Silva</td>
-                                <td>
-                                    <span class="badge badge-soft-success">Desenvolvido</span>
-                                </td>
-                                <td>19/01/2026</td>
-                                <td>
-                                    <span class="badge badge-soft-warning">Pendente</span>
-                                </td>
-                                <td>
-                                    <button class="btn btn-outline-secondary btn-sm">
-                                        <i class="bi bi-file-earmark-text"></i> Ver
-                                    </button>
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    Nenhum relatório encontrado
                                 </td>
                             </tr>
+                            @else
+
+                            @foreach ($ids as $avaliacao)
+                            <tr>
+                                <td>
+                                    <strong>{{ $avaliacao->nome }}</strong><br>
+                                    <small class="text-muted">RA: {{ $avaliacao->ra }}</small>
+                                </td>
+
+                                <td>{{ $avaliacao->uc }}</td>
+                                <td>{{ $avaliacao->curso }}</td>
+                                <td>{{ $avaliacao->docente }}</td>
+
+                                <td>
+                                    @if ($avaliacao->resultado === 'desenvolvido')
+                                    <span class="badge badge-soft-success">
+                                        Desenvolvido
+                                    </span>
+                                    @else
+                                    <span class="badge badge-soft-danger">
+                                        Não desenvolvido
+                                    </span>
+                                    @endif
+                                </td>
+
+                                <td>
+                                    {{ $avaliacao->data_avaliacao->format('d/m/Y') }}
+                                </td>
+
+                                <td>
+                                    @if ($avaliacao->status === 'pendente')
+                                    <span class="badge badge-soft-warning">
+                                        Pendente
+                                    </span>
+                                    @else
+                                    <span class="badge badge-soft-success">
+                                        Concluído
+                                    </span>
+                                    @endif
+                                </td>
+
+                                <td>
+                                    <a href="" class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-file-earmark-text"></i> Ver
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                            @endif
 
                         </tbody>
                     </table>
@@ -131,4 +168,5 @@
             </div>
 
         </section>
+    </div>
 </x-layout>

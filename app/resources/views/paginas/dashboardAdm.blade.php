@@ -22,7 +22,7 @@
                 <a class="btn btn-primary" href="turmas"><i class="bi bi-graph-up-arrow me-1"></i> Turmas</a>
             </li>
             <li class="nav-item">
-                <a class="btn btn-primary" href="relatórios"><i class="bi bi-graph-up-arrow me-1"></i>
+                <a class="btn btn-primary" href="relatorios"><i class="bi bi-graph-up-arrow me-1"></i>
                     Relatórios</a>
             </li>
         </ul>
@@ -200,23 +200,31 @@
                     </div>
 
                     <!-- Form -->
-                    <form action="" method="POST">
-                        <!-- @csrf -->
+                    <form action="/inserirCurso" method="POST">
+                        @csrf
+
 
                         <div class="modal-body">
-                            <div class="row">
+                            <div class="row g-3">
                                 <!-- Nome -->
-                                <div class="col">
+                                <div class="col-md-6">
                                     <label class="form-label fw-semibold">Nome do Curso *</label>
-                                    <input type="text" name="nome" class="form-control" placeholder="Ex: Técnico de TI"
+                                    <input type="text" name="nome" class="form-control" placeholder="Ex: Técnico em Informática"
+                                        required>
+                                </div>
+
+                                <!-- Sigla -->
+                                <div class="col-md-2">
+                                    <label class="form-label fw-semibold">Sigla *</label>
+                                    <input type="text" name="sigla" class="form-control text-uppercase" placeholder="TI, ADM..." maxlength="5"
                                         required>
                                 </div>
 
                                 <!-- Tipo -->
-                                <div class="col">
+                                <div class="col-md-4">
                                     <label class="form-label fw-semibold">Tipo *</label>
                                     <select name="tipo" class="form-select" required>
-                                        <option value="">Selecione o tipo</option>
+                                        <option value="">Selecione</option>
                                         <option value="tecnico">Técnico</option>
                                         <option value="graduacao">Graduação</option>
                                         <option value="livre">Curso Livre</option>
@@ -224,11 +232,12 @@
                                 </div>
                             </div>
 
+
                             <div class="row">
                                 <!-- Carga Horária -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Carga Horária (horas) *</label>
-                                    <input type="number" name="carga_horaria" class="form-control" min="0" value="0"
+                                    <input type="number" name="cargaHoraria" class="form-control" min="0" value="0"
                                         required>
                                 </div>
 
@@ -255,7 +264,7 @@
                                 <!-- Data Início -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Data de Início *</label>
-                                    <input type="date" name="data_inicio" class="form-control" required>
+                                    <input type="date" name="dataInicio" class="form-control" required>
                                 </div>
                             </div>
 
@@ -284,7 +293,7 @@
                                 <!-- Status -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Status</label>
-                                    <select name="status" class="form-select">
+                                    <select name="situacao" class="form-select">
                                         <option value="ativo" selected>Ativo</option>
                                         <option value="inativo">Inativo</option>
                                     </select>
@@ -321,8 +330,8 @@
                     </div>
 
                     <!-- Form -->
-                    <form action="" method="POST">
-                        <!-- @csrf -->
+                    <form action="/inserirDocente" method="POST">
+                        @csrf
 
                         <div class="modal-body">
                             <div class="row">
@@ -330,7 +339,7 @@
                                 <!-- Nome -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Nome Completo *</label>
-                                    <input type="text" name="nome" class="form-control"
+                                    <input type="text" name="nomeDocente" class="form-control"
                                         placeholder="Nome completo do docente" required>
                                 </div>
 
@@ -347,7 +356,7 @@
                                 <!-- Data de Nascimento -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Data de Nascimento *</label>
-                                    <input type="date" name="data_nascimento" class="form-control" required>
+                                    <input type="date" name="dataNascimento" class="form-control" required>
                                 </div>
                             </div>
 
@@ -372,7 +381,7 @@
                                 <!-- Email -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Email *</label>
-                                    <input type="text" name="email" class="form-control"
+                                    <input type="text" name="emailDocente" class="form-control"
                                         placeholder="email@senacsp.edu.br" required>
                                 </div>
                             </div>
@@ -432,6 +441,17 @@
                                         <option value="inativo">Inativo</option>
                                     </select>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label fw-semibold">Senha</label>
+                                        <input type="text" name="senhaDocente" class="form-control" placeholder="Informe a senha do docente">
+                                    </div>
+
+                                    <div class="col">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -464,8 +484,8 @@
                     </div>
 
                     <!-- Form -->
-                    <form action="" method="POST">
-                        <!-- @csrf -->
+                    <form action="/inserirAluno" method="POST">
+                        @csrf
 
                         <div class="modal-body">
                             <div class="row">
@@ -473,7 +493,7 @@
                                 <!-- Nome -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Nome Completo *</label>
-                                    <input type="text" name="nome" class="form-control"
+                                    <input type="text" name="nomeAluno" class="form-control"
                                         placeholder="Nome completo do aluno" required>
                                 </div>
 
@@ -497,12 +517,12 @@
                                 <!-- Data de Nascimento -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Data de Nascimento *</label>
-                                    <input type="date" name="data_nascimento" class="form-control" required>
+                                    <input type="date" name="dataNascimento" class="form-control" required>
                                 </div>
                                 <!-- Data de Matrícula -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Data de Matrícula</label>
-                                    <input type="text" name="" class="form-control" value="{{ now()->format('d/m/Y') }}"
+                                    <input type="text" class="form-control" value="{{ now()->format('d/m/Y') }}"
                                         readonly>
                                 </div>
                             </div>
@@ -527,7 +547,7 @@
                                 <!-- Email -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Email *</label>
-                                    <input type="text" name="email" class="form-control"
+                                    <input type="text" name="emailAluno" class="form-control"
                                         placeholder="email@senacsp.edu.br" required>
                                 </div>
                             </div>
@@ -536,7 +556,7 @@
                                 <!-- Carga Horária Diária -->
                                 <div class="col">
                                     <label class="form-label fw-semibold">Tipo de Matrícula *</label>
-                                    <select name="tipoMatricula" class="form-select">
+                                    <select name="tipo" class="form-select">
                                         <option value="pagante" selected>Pagante</option>
                                         <option value="bolsista">Bolsista</option>
                                     </select>
@@ -550,8 +570,20 @@
                                         <option value="inativo">Inativo</option>
                                     </select>
                                 </div>
+
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label fw-semibold">Senha</label>
+                                        <input type="text" name="senhaAluno" class="form-control" placeholder="Informe a senha do aluno">
+                                    </div>
+
+                                    <div class="col">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
 
                         <!-- Footer -->
                         <div class="modal-footer border-0 filter-tabs">
